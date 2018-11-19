@@ -58,8 +58,9 @@ void displaymap(char showmap[MAXROW+2][MAXCOL+2]){
 		printf("\n");
 	}
 }
-void updatemap(char minemap[MAXROW + 2][MAXCOL + 2],
-char showmap[MAXROW + 2][MAXCOL + 2],int col,int row){
+int  Count_round
+(char minemap[MAXROW + 2][MAXCOL + 2],int row,int col){
+	//统计周围地雷的个数
 	int count;
 	count = (minemap[row][col - 1] - '0') +
 		(minemap[row][col + 1] - '0') +
@@ -69,7 +70,54 @@ char showmap[MAXROW + 2][MAXCOL + 2],int col,int row){
 		(minemap[row + 1][col + 1] - '0') +
 		(minemap[row + 1][col - 1] - '0') +
 		(minemap[row - 1][col + 1] - '0');
-	   showmap[row][col] = '0'+count;
+	return count;
+}
+void updatemap(char minemap[MAXROW + 2][MAXCOL + 2],
+	char showmap[MAXROW + 2][MAXCOL + 2], int row, int col){
+	if (Count_round(minemap,row,col) == 0){
+		showmap[row][col] = '0' + Count_round(minemap, row, col);
+		for (int i=row; i> 0; --i){
+			for (int j=col; j > 0; j--){
+				if (Count_round(minemap, i, j) != 0||minemap[i][j]=='1')
+					break;
+				showmap[i][j] = '0' + Count_round(minemap, i, j);
+			}
+		}
+		for (int i=row; i >0; --i){
+			for (int j=col; j<= MAXCOL; ++j){
+				showmap[i][j] = '0' + Count_round(minemap, i, j);
+				if (Count_round(minemap, i, j) != 0||minemap[i][j] =='1')
+					break;
+			}
+		}
+		for (int i=row; i <= MAXROW; i++){
+			for (int j=col; j > 0; --j){
+				if (Count_round(minemap, i, j) != 0 || minemap[i][j] =='1')
+					break;
+				showmap[row][col] = '0' + Count_round(minemap, row, col);
+			}
+		}
+		for (int i=row; i <= 0; ++i){
+			for (int j=col; j < MAXCOL; --j){
+				showmap[i][j] = '0' + Count_round(minemap, i, j);
+				if (Count_round(minemap, i, j) != 0 || minemap[i][j] == '1')
+					break;
+				showmap[row][col] = '0' + Count_round(minemap, row, col);
+			}
+		}
+	}
+	showmap[row][col] = '0'+Count_round(minemap,row,col);
+}
+int check_winner(char showmap[MAXROW][MAXCOL], int lenrow, int lencol){
+	int sum_count=0;
+	for (int i = 1; i <= MAXROW; ++i){
+		for (int j=1; j <= MAXCOL; ++j){
+			if (showmap[i][j] == '*'){
+				sum_count++;
+			}
+		}
+	}
+	return sum_count;
 }
 void Game(){
 	//进行一局游戏
@@ -83,17 +131,18 @@ void Game(){
 	//有雷为1没有雷0
 	char minemap[MAXROW + 2][MAXCOL + 2];
 	//初始化数组
-	init(showmap,minemap);
+	init(showmap, minemap);
 	//打印出地图
 	displaymap(showmap);
+	displaymap(minemap);
 	while (1){
 		//玩家输入坐标,判断坐标是否合法
-		int row, col,count_remove=0;
+		int row, col, count_remove = 0;
 		printf("请输入坐标(x y)\n");
 		scanf("%d %d", &row, &col);
-		if (row > MAXROW || row<=0 || col>MAXCOL || col <= 0){
+		if (row > MAXROW || row <= 0 || col > MAXCOL || col <= 0){
 			printf("输入错误再次输入:\n");
-				continue;
+			continue;
 		}
 		//判定玩家是否踩雷
 		//1.踩雷游戏结束
@@ -102,16 +151,14 @@ void Game(){
 			printf("结束游戏\n");
 			break;
 		}
-		++count_remove;
-		//是不是掀开了所有的格子
-		if(count_remove==MAXROW*MAXCOL-MINE_COUNT){
-			displaymap(minemap);
-			printf("恭喜获胜\n");
-			break;
+		//有没有获胜
+		if (check_winner(showmap, MAXROW, MAXCOL ) == MINE_COUNT){
+			printf("恭喜您获得胜利\n");
 		}
 		//如果没踩雷统计该位置周围有几个雷跟新地图
-			updatemap(minemap,showmap,row,col);
-			displaymap(showmap);
+		//1.如果玩家输入的位置周围有雷
+		updatemap(minemap, showmap, row, col);
+		displaymap(showmap);
 	}
 }
 void Start(){
