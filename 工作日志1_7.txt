@@ -1,0 +1,1 @@
+学习了close(),open(),read(),open()函数对所学的Linux加以复习利用感觉很充实
