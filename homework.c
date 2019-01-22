@@ -87,15 +87,16 @@ void GetBit(int i) {
 //编写一个函数 reverse_string(char * string)（递归实现） 
 //实现：将参数字符串中的字符反向排列。
 //要求：不能使用C函数库中的字符串操作函数。
+
 void reverse_string(char * string) {
 	assert(string != NULL);
 	char* start = string;
 	char* end = string+strlen(string) - 1;
 	while (start<end) {
-		char* temp=0;
-		*temp = *start;
+		char temp;
+		temp = *start;
 		*start = *end;
-		*end = *temp;
+		*end = temp;
 		++start;
 		--end;
 	}
@@ -129,6 +130,49 @@ void Reverse_string(char * str) {
 		*end = temp;
 	}   
 }
+int GetoneCount(int number) {
+	int count = 0;
+	for (int i = 0; i <= 32; ++i) {
+		if (number&(1 << i))
+			count++;
+	}
+	return count;
+}
+int getonrcount(int num) {
+	int count = 0;
+	while (num ) {
+		++count;		
+		num = num & (num - 1);
+	}
+	return count;
+}
+void Getbit(int num) {
+	for (int i = 31; i >0;i-=2) {
+		printf("%d ", (num>>i) & 1);
+	}
+	printf("\n");
+	for (int i = 30; i >=0; i-=2) {
+		printf("%d ", (num >> i) & 1);
+	}
+}
+void printfbit(int num) {
+	if (num > 9) {
+		printfbit( num / 10);
+	}
+	printf("%d ", num % 10);
+}
+//两个int（32位）整数m和n的二进制表达中，有多少个位(bit)不同？
+int countDif(int x, int y) {
+	int count=0;
+	int i = 32;
+	while (i >= 0) {
+		if (((x >> i)&1) != ((y >> i)&1))
+			count++;
+		--i;
+	}
+	
+	return count;
+}
 int main() {
 	/*int ret2 = fibonacci(1);
 	int ret3 = fibonacci(4);
@@ -142,12 +186,16 @@ int main() {
 	printf("%d\n", ret4);
 	printf("%d\n", ret5);*/
 	//printf("%d\n", ret6);
-	char str[] = {0};
-	scanf("%s", str);
+	//char str[] = {0};
+	//scanf("%s", str);
    // int ret = m_strlen(str);
     //printf("%d\n", ret);
-	Reverse_string(str);
-	printf("%s\n", str);
+	//Reverse_string(str);
+	//printf("%s\n", str);
+	//Getbit(128);
+	//printfbit(5236);
+	//printf("%d\n", GetoneCount(6));
+	printf("%d\n", countDif(1999, 2299));
 	system("pause");
 	return 0;
 }
