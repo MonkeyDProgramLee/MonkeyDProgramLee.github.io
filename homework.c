@@ -248,10 +248,82 @@ int Differ(int val[],int len) {
 	}
 	return ret;
 }
-void Change(char* arr[]) {
-	Reverse_string(arr);
+void reseve(char* str) {
+	/*char* start = str;
+	char* end = str + strlen(str)-1;
+	if (*str) {
+		char temp;
+		temp = *start;
+		*start = *end;
+		*end = '\0';
+		reseve(start + 1);
+		*end=temp;
+	}*/
+	char* start = str;
+	char* end = str + Strlen(str) - 1;
+	if (*str) {
+		//交换首尾内容
+		char temp = *start;
+		*start = *end;
+		*end = '\0';
+		Reverse_string(start + 1);
+		//恢复数据
+		*end = temp;
+	}
+	  
+}
+void part_change(char* str, char* end) {
+	while (str < end) {
+		char temp;
+		temp = *str;
+		*str = *end;
+		*end = temp;
+		str++;
+		end--;
+	}
+}
+void Change(char* str) {
+  //整体交换
+	reseve(str);
+	//局部交换
+	char* start = str;
+	char* cur = str;
+	while (*cur) {
+		cur++;
+		if (*cur == ' ' || *cur == '\0') 
+		{
+			part_change(start, cur-1);
+			start = cur + 1;
+          }
+	}
+}
+void swp(int* a, int* b) {
+	int temp;
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+void SortByS(int arr[],int size) {
+	for (int left = 0; left < size; ++left) {
+		if (arr[left] % 2 == 0) {
+			for (int right = size; right >= 0; --right) {
+				if (arr[right] % 2 != 0) {
+					int temp;
+					temp = arr[right];
+					arr[right] = arr[left];
+					arr[left] = temp;
+					break;
+				}
+			}
+		}
+	}
 }
 int main() {
+	int arr[4] = { 1,2,3,4 };
+	SortByS(arr, 4);
+	for (int i = 0; i <4; ++i) {
+		printf("%d\n", arr[i]);
+	}
 	/*int ret2 = fibonacci(1);
 	int ret3 = fibonacci(4);
 	int ret4 = ufib(1);
@@ -265,7 +337,9 @@ int main() {
 	printf("%d\n", ret5);*/
 	//printf("%d\n", ret6);
 	//char str[] = {0};
-	//scanf("%s", str);
+	//gets(str);
+	//reseve(str);
+	//Change(str);
    // int ret = m_strlen(str);
     //printf("%d\n", ret);
 	//Reverse_string(str);
@@ -278,7 +352,7 @@ int main() {
 	printf("%d\n", countDif(1999, 2299));
 	PrintfYH();*/
 	//
-	printf("%u\n",reverse_bit2(25));
+	//printf("%u\n",reverse_bit2(25));
 	system("pause");
 	return 0;
 }
