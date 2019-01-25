@@ -5,8 +5,8 @@
 #include<assert.h>
 #include<windows.h>
 #include<math.h>
-#define ROW 10
-#define COL 10
+#define ROW 3
+#define COL 3
 int Fibonacci(int i) {
 	//项数小于0
 	//项数小于三的情况
@@ -306,24 +306,56 @@ void swp(int* a, int* b) {
 void SortByS(int arr[],int size) {
 	for (int left = 0; left < size; ++left) {
 		if (arr[left] % 2 == 0) {
-			for (int right = size; right >= 0; --right) {
-				if (arr[right] % 2 != 0) {
+			for (int right = size-1; right >= 0; --right) {
+				if (arr[right] % 2 != 0&&left<right) {
 					int temp;
 					temp = arr[right];
 					arr[right] = arr[left];
 					arr[left] = temp;
-					break;
 				}
 			}
 		}
 	}
 }
-int main() {
-	int arr[4] = { 1,2,3,4 };
-	SortByS(arr, 4);
-	for (int i = 0; i <4; ++i) {
-		printf("%d\n", arr[i]);
+int Find_Num(int arr[3][3],int to_find,int row ,int col) {
+	if (to_find<arr[0][0] || to_find>arr[ROW - 1][COL - 1]){
+		printf("没有要找的数\n");
+		return -1;
+		}
+	int r = 0, c = COL-1;
+	while (r <= ROW - 1 && c >= 0) {
+		if (to_find < arr[r][c]) {
+			c--;
+		}
+		if (to_find > arr[r][c]) {
+			r++;
+		}
+		if (to_find == arr[r][c]) {
+			return 1;
+		}
+		if (r <= ROW - 1 && c >= 0)
+			return -1;
 	}
+}
+void left_rotate(char* str , int k) {
+	char temp = *str;
+	char* cur = str;
+	while (k--) {
+		while (*(cur + 1)) {
+			*cur = *(cur + 1);
+			cur++;
+		}
+		*cur = temp;
+	}
+}
+int main() {
+	//int arr[3][3] = { 1,2,3,2 ,3,4,3,4,5};
+	//int ret = Find_Num(arr, 4, 3, 3);
+	//printf("%d\n", ret);
+	//SortByS(arr, 8);
+	//for (int i = 0; i <8; ++i) {
+	//	printf("%d\n", arr[i]);
+	//}
 	/*int ret2 = fibonacci(1);
 	int ret3 = fibonacci(4);
 	int ret4 = ufib(1);
@@ -336,14 +368,16 @@ int main() {
 	printf("%d\n", ret4);
 	printf("%d\n", ret5);*/
 	//printf("%d\n", ret6);
-	//char str[] = {0};
-	//gets(str);
+	char str[] = {0};
+	gets(str);
+	//char* str = "abcd";
 	//reseve(str);
 	//Change(str);
    // int ret = m_strlen(str);
     //printf("%d\n", ret);
 	//Reverse_string(str);
-	//printf("%s\n", str);
+	 left_rotate(str , 4);
+	printf("%s\n", str);
 	//Getbit(128);
 	//printfbit(5236);
 	//printf("%d\n", GetoneCount(6));
