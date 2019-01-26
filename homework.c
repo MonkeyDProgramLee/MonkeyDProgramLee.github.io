@@ -348,6 +348,38 @@ void left_rotate(char* str , int k) {
 		*cur = temp;
 	}
 }
+void nizhuanstring(char* left, char* right) {
+	while (left < right) {
+		char temp;
+		temp = *left;
+		*left = *right;
+		*right = temp;
+		left++;
+		right--;
+	}
+}
+void left_rotate2(char* str, int k) {
+	nizhuanstring(str, str + k-1);
+	nizhuanstring(str + k, str + strlen(str) - 1);
+	nizhuanstring(str, str + strlen(str) - 1);
+}
+void right_ratate(char* str, int k) {
+	left_rotate(str, strlen(str) - k);
+}
+void paunduan(char* dest,char* src) {
+	int len = strlen(src);
+	for (int i = 0; i < len; ++i) {
+		eft_rotate(src, i);
+		if (strcmp(dest, src) == 0) {
+			prinft("ур╣╫ак\n");
+			break;
+		}
+		if (i == len - 1) {
+			printf("\n");
+		}
+	}
+}
+
 int main() {
 	//int arr[3][3] = { 1,2,3,2 ,3,4,3,4,5};
 	//int ret = Find_Num(arr, 4, 3, 3);
@@ -368,16 +400,16 @@ int main() {
 	printf("%d\n", ret4);
 	printf("%d\n", ret5);*/
 	//printf("%d\n", ret6);
-	char str[] = {0};
-	gets(str);
+	//char str[] = {0};
+	//gets(str);
 	//char* str = "abcd";
 	//reseve(str);
 	//Change(str);
    // int ret = m_strlen(str);
     //printf("%d\n", ret);
 	//Reverse_string(str);
-	 left_rotate(str , 4);
-	printf("%s\n", str);
+	// left_rotate(str , 1);
+	//printf("%s\n", str);
 	//Getbit(128);
 	//printfbit(5236);
 	//printf("%d\n", GetoneCount(6));
@@ -387,6 +419,35 @@ int main() {
 	PrintfYH();*/
 	//
 	//printf("%u\n",reverse_bit2(25));
+	int pos = -1;
+	int arr[] = { 1,1,2,2,3,3,5,7 };
+	int ret = 0;
+	int x1=0;
+	int x2=0;
+	for (int i = 0; i < sizeof(arr); ++i) {
+		ret = ret ^ arr[i];
+	}
+	for (int i = 0; i < 32; ++i) {
+		if ((ret >> i) & 1 == 1) {
+			pos = i;
+			break;
+		}
+	}
+	for (int i = 0; i < sizeof(arr); ++i) {
+		if ((arr[i] >> pos) & 1 == 1) {
+			x1 = x1 ^ arr[i];
+		}
+		else {
+			x2 = x2 ^ arr[i];
+		}
+		int total = 0;
+		int money = 20;
+		int empty = 20;
+		while (empty > 1) {
+			total = money + empty/2;
+			empty = empty / 2+empty%2;
+
+		}
 	system("pause");
 	return 0;
 }
