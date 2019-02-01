@@ -168,6 +168,22 @@ int Strtok(char* input, const char* split_char, char* output[]) {
 	}
 	return output_index;
 }
+int Tolower(int c) {
+	if (c >= 'A'&&c <= 'Z') {
+		c += 'a' - 'A';
+		return c;
+	}
+	return c;
+}
+void Memcpy(void* dest[], void* src[],size_t num) {
+	char* p_dest = (char*)dest;
+	char* p_src = (char*)src;
+	for (int i = 0; i < num; ++i) {
+		p_dest[i] = p_src[i];
+	}
+	//¿¼ÂÇ
+}
+
 int main() {
 	/*int arr[] = { 10,5,6,3,5 };
 	BubbleSort(arr, 5,Less);
@@ -193,7 +209,7 @@ int main() {
 		Sub,
 	    Mul,
 	    Div
-	};
+	}; 
 	arr[choice - 1](10, 20);*/
 
 	//printf("%d\n", IsLittleEnd());
